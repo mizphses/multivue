@@ -26,7 +26,6 @@
       >
         ファイルアップロード
       </div>
-      <p>{{ userList }}</p>
     </div>
   </div>
 </template>
@@ -37,7 +36,7 @@ export default {
   data() {
     return {
       isEnter: false,
-      userList: [],
+      userList: ['a', 'b'],
     }
   },
   methods: {
@@ -51,9 +50,9 @@ export default {
       const reader = new FileReader()
       reader.readAsText(event.dataTransfer.files[0])
 
+      const jsonArray = []
       reader.onload = function (event) {
         const result = event.target.result
-        const jsonArray = []
         const RowArray = result.split('\n')
         const items = RowArray[0].split(',')
         for (let i = 1; i < RowArray.length; i++) {
@@ -62,10 +61,15 @@ export default {
           for (let j = 0; j < items.length; j++) {
             line[items[j]] = cellArray[j]
           }
+          console.log(line)
           jsonArray.push(line)
         }
-        this.userList = jsonArray
       }
+      // this.$store.commit('add', jsonArray)
+      console.log(jsonArray)
+      this.$store.commit('add', jsonArray)
+      // this.$store.commit('add', )
+      // this.$router.push('/list')
     },
   },
 }
